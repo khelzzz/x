@@ -1,0 +1,3 @@
+loadstring(game:HttpGet("https://raw.githubusercontent.com/khelzzz/Pineda/refs/heads/main/Pineda.txt"))()
+
+loadstring(game:HttpGet("https://raw.githubusercontent.com/khelzzz/Source/refs/heads/main/s.txt"))()
