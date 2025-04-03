@@ -1,0 +1,123 @@
+-- Initialize variables
+local applyesptrans = 0.5  -- Transparency of ESP highlights
+local espEnabled = false    -- Whether ESP is enabled or not
+local noclipEnabled = false -- Whether NoClip is enabled or not
+local screenGui = Instance.new("ScreenGui")
+screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+-- Function to create the ESP for a player
+local function CreateHighlight(player)
+    -- Make sure the player has a character and hasn't been marked with a Highlight already
+    if player.Character and not player.Character:FindFirstChild("ESP_Highlight") then
+        -- Create Highlight for the player
+        local highlight = Instance.new("Highlight")
+        highlight.Name = "ESP_Highlight"
+        highlight.Parent = player.Character
+        highlight.FillTransparency = applyesptrans
+        highlight.OutlineTransparency = 1
+        highlight.Adornee = player.Character
+
+        -- Set default color (Green for normal players)
+        highlight.FillColor = Color3.fromRGB(0, 255, 0)
+    end
+end
+
+-- Function to update ESP for all players
+local function UpdateESP()
+    for _, player in pairs(game.Players:GetPlayers()) do
+        if player.Character and player ~= game.Players.LocalPlayer then
+            -- Apply Highlight if ESP is enabled and the player doesn't have an ESP highlight yet
+            if espEnabled and not player.Character:FindFirstChild("ESP_Highlight") then
+                CreateHighlight(player)
+            end
+        end
+    end
+end
+
+-- Toggle ESP on or off
+local function ToggleESP(SeeESP)
+    espEnabled = SeeESP
+    if espEnabled then
+        -- Enable ESP: Apply highlights to all players
+        UpdateESP()
+    else
+        -- Disable ESP: Remove all highlights
+        for _, player in pairs(game.Players:GetPlayers()) do
+            if player.Character and player.Character:FindFirstChild("ESP_Highlight") then
+                player.Character:FindFirstChild("ESP_Highlight"):Destroy()
+            end
+        end
+    end
+end
+
+-- Toggle NoClip on or off
+local function ToggleNoClip(enable)
+    noclipEnabled = enable
+    local character = game.Players.LocalPlayer.Character
+    if character then
+        local humanoid = character:FindFirstChildOfClass("Humanoid")
+        if humanoid then
+            humanoid:SetStateEnabled(Enum.HumanoidStateType.Physics, noclipEnabled)
+            -- Set CanCollide to false for all parts in the character to allow NoClip
+            for _, part in pairs(character:GetChildren()) do
+                if part:IsA("BasePart") then
+                    part.CanCollide = not noclipEnabled
+                end
+            end
+        end
+    end
+end
+
+-- Create a UI Button for toggling ESP
+local espButton = Instance.new("TextButton")
+espButton.Size = UDim2.new(0, 200, 0, 50)  -- Button size
+espButton.Position = UDim2.new(0, 20, 0, 20)  -- Button position (top-left corner)
+espButton.Text = "Toggle ESP"
+espButton.BackgroundColor3 = Color3.fromRGB(0, 128, 255)  -- Blue color
+espButton.TextColor3 = Color3.fromRGB(255, 255, 255)  -- White text
+espButton.Font = Enum.Font.SourceSans
+espButton.TextSize = 24
+espButton.Parent = screenGui
+
+-- Toggle the ESP when the button is clicked
+espButton.MouseButton1Click:Connect(function()
+    ToggleESP(not espEnabled)
+end)
+
+-- Create a UI Button for toggling NoClip
+local noclipButton = Instance.new("TextButton")
+noclipButton.Size = UDim2.new(0, 200, 0, 50)  -- Button size
+noclipButton.Position = UDim2.new(0, 20, 0, 80)  -- Button position (below the ESP button)
+noclipButton.Text = "Toggle NoClip"
+noclipButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)  -- Red color
+noclipButton.TextColor3 = Color3.fromRGB(255, 255, 255)  -- White text
+noclipButton.Font = Enum.Font.SourceSans
+noclipButton.TextSize = 24
+noclipButton.Parent = screenGui
+
+-- Toggle the NoClip when the button is clicked
+noclipButton.MouseButton1Click:Connect(function()
+    ToggleNoClip(not noclipEnabled)
+end)
+
+-- Recreate the button if it gets removed after death or reset
+game.Players.LocalPlayer.CharacterAdded:Connect(function()
+    -- Ensure the ScreenGui persists and is recreated after reset or death
+    if not screenGui.Parent then
+        screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+    end
+    if not espButton.Parent then
+        espButton.Parent = screenGui
+    end
+    if not noclipButton.Parent then
+        noclipButton.Parent = screenGui
+    end
+end)
+
+-- Update ESP and NoClip on every frame
+game:GetService("RunService").Heartbeat:Connect(function()
+    -- Update ESP if it's enabled
+    if espEnabled then
+        UpdateESP()
+    end
+end)
