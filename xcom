@@ -180,6 +180,12 @@ local function ensureGuiPersistence()
     end
 end
 
+-- Keep GUI persistent across respawns
+game.Players.LocalPlayer.CharacterAdded:Connect(function()
+    -- Ensure the GUI and buttons stay visible after respawning
+    ensureGuiPersistence()
+end)
+
 -- Keep GUI persistent
 game:GetService("RunService").Heartbeat:Connect(ensureGuiPersistence)
 
